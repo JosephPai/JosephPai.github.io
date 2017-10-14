@@ -7,7 +7,11 @@ CS专业在读学生，兼职国家二级抖腿表演艺术家。
 就读帝都非著名211高校，现于台北交流学习。
 
 一些杂七杂八的开源项目：
+
  [Python搭建个人博客](https://github.com/JosephPai/Python3-Web-Blog)
- [有你，你在即我在——Android端APP](https://github.com/JosephPai/WithYou)
+ 
+ [有你，你在即我在——Android端生活服务APP](https://github.com/JosephPai/WithYou)
+ 
  [岛国电影正义爬虫](https://github.com/JosephPai/1024Video-Crawler)
- [更多内容](https://github.com/JosephPai)
+ 
+ [更多内容……](https://github.com/JosephPai)
