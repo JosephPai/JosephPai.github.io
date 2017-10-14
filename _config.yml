@@ -53,7 +53,9 @@ disqus_username: baizechen
 # Netease setttings
 netease_comment: false
 
-
+# Google Analytics
+ga_track_id: 'UA-108118968-1'            # Format: UA-xxxxxx-xx
+ga_domain: baizechen.site
 
 
 # Sidebar settings
