@@ -48,20 +48,11 @@ kramdown:
 
 
 # Disqus settings
-# disqus_username: hux
+disqus_username: 白泽琛
 
 # Netease setttings
 netease_comment: false
 
-
-
-# Analytics settings
-# Baidu Analytics 
-# ba_track_id: [your track id]
-
-# Google Analytics
-# ga_track_id: 'UA-49627206-1'            # Format: UA-xxxxxx-xx
-# ga_domain: huangxuan.me
 
 
 

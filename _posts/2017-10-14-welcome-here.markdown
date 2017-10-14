@@ -7,6 +7,7 @@ author:     "Bai"
 header-img: "img/post-bg-alitrip.jpg"
 header-mask: 0.3
 catalog:    true
+comments: true
 tags:
     - 杂谈
     - 台北
