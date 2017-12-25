@@ -34,10 +34,10 @@ Tokyo真的有那么hot？
 自己动手，丰衣足食！
 
 ## 环境 & 依赖
- Win10 64bit
- IDE: PyCharm
- Python 3.6
- python-site-packegs: requests + BeautifulSoup + lxml + re + m3u8
+- Win10 64bit
+- IDE: PyCharm
+- Python 3.6
+- python-site-packegs: requests + BeautifulSoup + lxml + re + m3u8
  
  在已经安装pip的环境下均可直接命令行安装
 
