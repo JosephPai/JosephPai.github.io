@@ -1,0 +1,68 @@
+---
+layout:     post
+title:      "Python爬虫设置动态代理"
+subtitle:   "面试中经常会问到哦~"
+date:       2017-12-25 12:30:00
+author:     "Bai"
+header-img: "img/post-bg-alitrip.jpg"
+header-mask: 0.3
+catalog:    true
+comments: true
+tags:
+    - Python
+    - 爬虫
+---
+
+### 问题
+ 在写爬虫的早期，一些小的练手项目，并不会涉及到IP的问题，用默认的网络爬一下就OK了。但是一旦面临较大的数据量，较多条目的数据，意味着更多的请求。就有了自己默认IP被封的可能性。一个合格的网站为了防止服务器负载过大，也应该设置这样的机制来限制频繁请求。
+ 那么我们写爬虫的人该如何处理这种情况呢？
+
+
+### 解决
+ 为了防止一个IP访问过于频繁而造成的的拒绝访问，治标的方法是，在求请访问的时候设置一定的**时间间隔**。
+ 
+  ```
+  import time
+  ......
+  time.sleep(10)
+  ....
+  ```
+   这种方法对于很多的网站已经是足够对付了，但是仍然有一定的风险，尤其是数据量很大的时候。
+   治本的方法是，设置**动态代理**
+   直接来看代码：
+   
+  
+	    
+        def get_ip_list(self):
+	        print("正在获取代理列表...")
+	        url = 'http://www.xicidaili.com/nn/'
+	        html = requests.get(url=url, headers=self.headers).text
+	        soup = BeautifulSoup(html, 'lxml')
+	        ips = soup.find(id='ip_list').find_all('tr')
+	        ip_list = []
+	        for i in range(1, len(ips)):
+	            ip_info = ips[i]
+	            tds = ip_info.find_all('td')
+	            ip_list.append(tds[1].text + ':' + tds[2].text)
+	        print("代理列表抓取成功.")
+	        return ip_list
+	        
+	    def get_random_ip(self,ip_list):
+			print("正在设置随机代理...")
+			proxy_list = []
+			for ip in ip_list:
+	            proxy_list.append('http://' + ip)
+		    proxy_ip = random.choice(proxy_list)
+		    proxies = {'http': proxy_ip}
+	        print("代理设置成功.")
+	        return proxies
+ 
+ 主要由两个函数组成，一个是从 http://www.xicidaili.com/nn/ 抓取代理IP的函数，返回得到IP地址和端口号组成的列表。第二个函数是从第一个函数得到的列表中随机选取代理IP，并组装成proxies字典格式，然后返回。
+ 
+ 使用方式：
+ ```
+ resp = requests.get(key.uri, headers = self.headers, proxies=proxies)
+ ```
+
+ 在程序中可以设置定点，比如每采集固定个数个项目后就更换一次IP。
+ get_ip_list（）函数实际上只采集了一页的IP，但是只要配合好sleep()使用，已经可以应对绝大多数情况，而且一页的IP其实数量也相当不少了呢~~
