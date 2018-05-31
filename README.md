@@ -1,6 +1,6 @@
 # 我的个人站
 
-### [我的博客在这里 &rarr;](http://JosephPai.github.io)
+### [我的博客在这里 &rarr;](http://www.baizechen.site)
 
 
 ## 致谢

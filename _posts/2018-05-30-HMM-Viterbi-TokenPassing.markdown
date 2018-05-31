@@ -16,14 +16,12 @@ tags:
 ## 1 从语音识别说起
 语音识别是什么，通俗来说，就是输入音频，输出识别文字结果。基本方程如下
 ![这里写图片描述](https://img-blog.csdn.net/20180531120643920?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0pvc2VwaFBhaQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
-![这里写图片描述](https://img-blog.csdn.net/20180531120707285?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0pvc2VwaFBhaQ==/font/5a6L5L2T/fontsize/10/fill/I0JBQkFCMA==/dissolve/2)： 识别结果
+![这里写图片描述](https://img-blog.csdn.net/20180531120707285?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0pvc2VwaFBhaQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)： 识别结果
  	W：任一单词（以孤立词举例说明）
  	O：输入的语音序列（Observation Sequence）
  	
 上述方程的变换应用了Bayes Rule.
-	
 等式右边是两项乘积，P(W)来自语言模型（Language Model， LM）， 常用的模型有 N-gram。 P(O | W)来自于声学模型（Acoustic Model， AM），传统的语音识别系统普遍采用的是基于GMM-HMM的声学模型，其中GMM用于对语音声学特征的分布进行建模，HMM则用于对语音信号的时序性进行建模。具体介绍网上有很多通俗易懂的文章，这里暂不赘述。本文重点讲解声学模型中的解码问题，暂不涉及语言模型。
-
 
 
 ## 2 计算P(O | W) —— 解码
