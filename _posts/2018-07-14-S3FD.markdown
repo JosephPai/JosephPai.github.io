@@ -1,0 +1,67 @@
+---
+layout:     post
+title:      "[CV Paper] S3FD : Single Shot Scale-invariant Face Detector"
+subtitle:   "论文阅读：单网络多尺度人脸检测器"
+date:       2018-07-14 22:13:16
+author:     "Bai"
+header-img: "img/post-bg-alitrip.jpg"
+header-mask: 0.3
+catalog:    true
+comments: true
+tags:
+    - 深度学习
+    - 计算机视觉
+---
+
+#论文阅读：单网络多尺度人脸检测器
+------
+
+## 综述
+本文将主要解决anchor-based方法在目标区域较小时效果显著下降的问题。
+    1.	scale-equitable face detection framework来处理不同尺度的人脸
+    2.	scale compensation anchor matching strategy
+    3.	max-out background label.
+
+人脸识别在过去几十年取得了长足进步。人脸识别可以看做目标检测的一个特殊情形并拿出来单独处理，本文以通用的anchor-based目标检测模型为基础，修改提升其为state-of-the-art人脸识别器。
+
+
+## **1. 框架问题**
+
+>*  原有的anchor-based framework很容易丢失尺寸较小的人脸，底层的CNN的stride过大，无法提取足够多的人脸特征
+
+>*  较小的人脸、anchor的尺度和感受野的尺度彼此互相不匹配，anchor和感受野互相不匹配，并且他们二者对于较小的人脸来说还是太大了
+
+
+解决上述两个问题，提出了上文了的第（1）个方法，多尺度并行框架，stride从4到128不等，保证不同尺度的目标都能提取到足够特征。anchor size从16到512，并且映射到不同的网络层。
+
+![结构](https://img-blog.csdn.net/2018072713113998?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0pvc2VwaFBhaQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
+
+具体架构如上图所示，有六个颜色加深的detection layers分别计算loss，对不同尺度anchor分别预测，并且从更为细小的特征逐步组合，保证了小尺度的人脸依旧有足够的特征可以进行识别。
+
+anchor size设置依据的是其他文献提出的effective receptive field理论equal-proportion interval principle理论。前者保证了anchor和感受野的良好匹配。后者使得不同尺度的anchor在图片中保持同样的密度。
+
+### **Effective receptive field**
+此处需要大家对于接受域（或者叫感受野）有一定的了解。中间的少部分区域对输出的结果有着很大的影响。这这块区域就叫做effective receptive field. 根据这个理论，anchor大小设置应当小于感受野的大小，这样才能使得真正的人脸部分对于感受野起到较强的影响。如下图所示。
+
+![field](https://img-blog.csdn.net/20180727131214161?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0pvc2VwaFBhaQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
+
+### **Equal-proportion interval principle**
+Anchor的尺度设置为stride大小的四倍，保证不同尺度下，图片中该尺度的anchor数目相同，也就是密度相同。这样不同尺度的人脸可以匹配到大致相同数目的anchor
+
+# **2.anchor matching strategy**
+之前的匹配方式：
+> 首先为每一张人脸匹配一个jaccard overlap（交并比）最高的anchor，然后遍历anchors，如果这个anchor和某张人脸的jaccard overlap高于某个阈值，就将这个anchor归于这张人脸。
+
+问题在于，Anchor的尺度大小是离散分布的，但是人脸尺度大小是连续的，某些尺寸的人脸无法匹配到足够多数量的anchors
+提出尺度修正，两方面：
+> * 一是在当前的anchor matching基础上，降低jaccard overlap阈值，从一般常用的0.5降低至0.35，以获得更多的matched anchors
+> * 二，在一的基础上，针对没有匹配到理想数目的人脸，找出所有与其jaccard overlap高于0.1的anchor进行排序，取top-N，N是由一获得的matched anchors平均数
+
+# **3.Max-out background label**
+anchor-based人脸识别器可以把每一个anchor视为一个二分类器，结果为positive对应人脸，或者negative对应背景。根据统计，99.8%的anchors都属于negative，存在着极大的不平衡。这种情况的重要原因之一就是在前面为了检测较小尺度的人脸设置了很多很小的anchor。
+#### 解决办法：
+> 对最底层的识别层（架构图中的conv3_3）应用max-out，对每一个最小anchor预测一个Nm score，作为它可能为background的得分，然后选择score作为这几个的anchor的final score。这个原理与maxout激活函数和max pool相近，这样可以减少很多不必要的运算。
+
+----
+### Reference
+Zhang S, Zhu X, Lei Z, et al. S^ 3FD: Single Shot Scale-Invariant Face Detector[C]//Computer Vision (ICCV), 2017 IEEE International Conference on. IEEE, 2017: 192-201.
