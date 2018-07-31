@@ -1,7 +1,7 @@
 ---
 layout:     post
 title:      "[CV Paper] FaceBoxes: A CPU Real-time Face Detector with High Accuracy"
-subtitle:   "论文阅读：单网络多尺度人脸检测器"
+subtitle:   "论文阅读：CPU上的高精度实时人脸检测器"
 date:       2018-07-24 16:44:16
 author:     "Bai"
 header-img: "img/post-bg-alitrip.jpg"
